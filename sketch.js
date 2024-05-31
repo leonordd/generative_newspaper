@@ -37,9 +37,11 @@ function draw() {
   
   //rect(-img1Pos-width/2,0,100,100);
   rect(100,-img2Pos,100,height/2);
-  //grid.gridDisplay(gridColor);
+  
   var img2Pos = hs2.getPos();
   translate(0,-img2Pos);
+  grid.gridDisplay(gridColor);
+
 
   color(0);
   grid.textGrid("WA", "n3", "old", 0, 1, 0, -3);
