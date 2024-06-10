@@ -29,21 +29,26 @@ class TextBox {
         let y0 = this.y;
 
         for (let i = 0; i < this.str.length; i++) {
-
-            let charWidth = textWidth(this.str.charAt(i));
-            xCoords.push(this.x); 
-            yCoords.push(this.y); 
-
-            let particle = new Particle(this.str.charAt(i), this.x, this.y, this.letterSize);
-            particles.push(particle);
-
-            this.x += charWidth; 
+            //console.log(this.str.charAt(i));
+            if(this.str.charAt(i) == '$'){
+                this.x = x0;
+                this.y += this.letterHeight*2;
+            }else{
+                let charWidth = textWidth(this.str.charAt(i));
+                xCoords.push(this.x); 
+                yCoords.push(this.y); 
+    
+                let particle = new Particle(this.str.charAt(i), this.x, this.y, this.letterSize);
+                particles.push(particle);
+    
+                this.x += charWidth; 
+            }
 
             // new word
             if (this.str.charAt(i) == ' ') {
                 if (this.x + textWidth(words[n + 1]) >= x0 + this.boxWidth) {
                     print(textWidth(words[n + 1]));
-                    print("****");
+                    //print("****");
                     //this.x = w/2 - this.boxWidth*.5;
                     this.x = x0;
                     this.y += this.letterHeight;

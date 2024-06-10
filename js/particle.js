@@ -60,7 +60,7 @@ class Particle {
   }
 
   draw() {
-    fill(0,0,0, this.currDist);
+    fill(0,0,0);
     if (this.diff > 30) this.size = 30;
     else this.size = letterSize;
 

@@ -4,7 +4,7 @@ class Grid {
 		this.gridX = 8;
 		this.gutterX = 20;
 		this.gutterY = 0;
-		this.pad = 24;
+		this.pad = 32;
 		this.pt=1;
 
 		this.info = [];
@@ -170,7 +170,7 @@ class Grid {
 
 	  if(size=='h3'){
 		textAlign(LEFT, align)
-		translate(0, 0)
+		//translate(0, 0)
 		//scale(1.02, 1.02)
 		fontSize = 16 * this.pt
 	  }
@@ -213,7 +213,6 @@ class Grid {
 	
 	this.info.push(dict);
   pop();
-  
   }
 
   lineGrid(fromx, tox, fromy, toy){
@@ -336,72 +335,12 @@ getVisibleText(content, size, maxHeight, cols) {
 	return lines.join(' ');
 }
 
-/*splitIntoParagraphs(text) {
-	console.log("Olá");
-	// Split the text into paragraphs based on <p> tags
-	let regex = /<p>(.*?)<\/p>/g;
-	let matches = text.match(regex);
-	let paragraphs = [];
-	if (matches) {
-	  for (let i = 0; i < matches.length; i++) {
-		// Remove <p> and </p> tags from each match
-		let paragraph = matches[i].replace(/<\/?p>/g, '');
-		paragraphs.push(paragraph);
-	  }
-	}
-	return paragraphs;
-}*/
-
-/*renderTextInColumns(content, size, font, fromx, startY, columnHeight) {
-	let currentX = fromx;
-	let currentY = startY;
-
-	let paragraphs = [];
-	paragraphs = this.splitIntoParagraphs(content);
-	let remainingText = content;
-	
-	let cols = 2; // Cada texto ocupará 2 colunas
-	let totalColumns = floor((this.gridX - fromx) / cols);
-
-	for (let i = 0; i < totalColumns; i++) {
-		if (remainingText.length <= 0) {
-			break;
-		}
-
-		let visibleText = this.getVisibleText(remainingText, size, columnHeight, cols);
-		this.textGrid(visibleText, size, font, currentX, currentX + cols, currentY);
-
-		remainingText = remainingText.slice(visibleText.length);
-
-		currentX += cols;
-		if (currentX >= this.gridX) {
-			break;
-		}
-
-		let textHeight = this.textHeight(visibleText, size, cols);
-		if(i==0){
-			currentY = startY+4; // Ajusta a posição Y para a próxima 2
-			columnHeight=850;
-		}else if(i==1){
-			currentY = startY+4; // Ajusta a posição Y para a próxima 3
-			columnHeight=850;
-		}else if(i==2){
-			currentY = startY; // Ajusta a posição Y para a próxima 4
-			columnHeight=900;
-		}
-
-		if (currentY >= this.gridY) {
-			currentY = 0; // inicializa o Y quando a altura atingir a altura máxima da grelha
-		}
-	}
-}*/
-
 renderTextInColumns(content, size, font, fromx, startY, columnHeight) {
 	this.info = [];
 	this.isBodyText = true;
 	let currentX = fromx;
 	let currentY = startY;
-	let formattedString = content.replace(/<p>/g, '\n\n').replace(/<\/p>/g, '');
+	let formattedString = content.replace(/<p>/g,'$').replace(/<\/p>/g,'');
 
 	let remainingText = formattedString;
 	let cols = 2; // Cada texto ocupa 2 colunas
@@ -425,14 +364,14 @@ renderTextInColumns(content, size, font, fromx, startY, columnHeight) {
 		}
 
 		if(i==0){
-			currentY = startY+4; // Ajusta a posição Y para a próxima 2
-			columnHeight=701;
+			currentY = startY+5.7; // Ajusta a posição Y para a próxima 2
+			columnHeight=650;
 		}else if(i==1){
-			currentY = startY+4; // Ajusta a posição Y para a próxima 3
-			columnHeight=710;
+			currentY = startY+5.7; // Ajusta a posição Y para a próxima 3
+			columnHeight=703;
 		}else if(i==2){
-			currentY = startY+2; // Ajusta a posição Y para a próxima 4
-			columnHeight=872;
+			currentY = startY+1.65; // Ajusta a posição Y para a próxima 4
+			columnHeight=740;
 		}
 
 		if (currentY >= this.gridY) {
