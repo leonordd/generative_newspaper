@@ -27,7 +27,7 @@ class TextBox {
         let particles = [];
         let x0 = this.x;
         let y0 = this.y;
-
+        this.str = this.str.trim();
         for (let i = 0; i < this.str.length; i++) {
             //console.log(this.str.charAt(i));
             if(this.str.charAt(i) == '$'){
