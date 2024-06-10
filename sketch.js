@@ -4,26 +4,19 @@ let w, h;
 w = 1280 / 2;
 h = 720 / 2;
 
-let boxWidth = 500;
-let boxHeight = 200;
+
+let boxWidth = 100;
+let boxHeight = 300;
 let letterSize = 16;
 let letterHeight = letterSize + 4;
 let particles;
 
 // let str = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.';
-let str = "Wesley Wales Anderson (Houston, 1 de maio de 1969) é um cineasta americano, produtor, roteirista e ator. Seus filmes são conhecidos pelos seus visuais excêntricos e pelo estilo de narrativa. \n Anderson foi indicado pelo Oscar na categoria de Melhor Roteiro Original em The Royal Tenenbaums em 2001, Moonrise Kingdom em 2012 e em O Grande Hotel Budapeste em 2014, e também na categoria de Melhor Animação em The Fantastic Mr.Fox em 2009. Recebeu sua primeira indicação como Melhor Diretor e ganhou o Globo de Ouro de Melhor Filme - Comédia ou Musical pelo filme The Grande Budapest Hotel em 2014. Recebeu também o Prêmio BAFTA de Melhor Roteiro Original em 2015.";
+let str = "Lorem Ipsum is simply dummy text of the printing and typesetting industry.\nLorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.";
 
-let bezierPoints = [];
-
-
-let x1;
-let x2;
-let x3;
-let x4;
-let y1;
-let y2;
-let y3;
-let y4;
+let x1, x2, x3, x4, y1, y2, y3, y4;
+let x = w/2 - boxWidth*.5;
+let y = h/2 - boxHeight*.5;
 
 function preload() {
   font = loadFont("fonts/HelveticaNowDisplay-Light.ttf");
@@ -33,7 +26,7 @@ function setup() {
   
   createCanvas(w, h);
 
-  x1 = w * random(0.05, 0.3);
+  /* x1 = w * random(0.05, 0.3);
   x2 = w * random(0.2, 0.6);
   x3 = w * 0.7;
   x4 = w * random(0.7, 0.9);
@@ -41,7 +34,7 @@ function setup() {
   y1 = h * 0.3;
   y2 = h * random(0, 1.5);
   y3 = -y2;
-  y4 = h * 0.9;
+  y4 = h * 0.9; */
 
   // background(222);
   
@@ -52,62 +45,103 @@ function setup() {
   textSize(letterSize);
   textFont(font);
 
-  let x = w/2 - boxWidth*.5;
-  let y = h/2 - boxHeight*.5;
-
-  let text = new TextBox(str, x, y, boxWidth, boxHeight, letterHeight);
+   
+  let text = new TextBox(str, x, y, boxWidth, boxHeight, letterHeight, letterSize);
+  // randomBezierCurve(x, y, boxWidth, boxHeight);
   particles = text.getWordParticles();
+}
 
-  for (let i = 0; i < 150; i+=1/150) {
-    // print(i)
-    x = bezierPoint(x1, x2, x3, x4, i);
-    y = bezierPoint(y1, y2, y3, y4, i);
-    bezierPoints.push([x, y]);
+
+function getPoints(x_coordinates, y_coordinates) {
+  listOfPoints = []
+  for (let i = 0; i < 100; i+=1/100) {
+    let coord_x = bezierPoint(x_coordinates[0], x_coordinates[1], x_coordinates[2], x_coordinates[3], i);
+    let coord_y = bezierPoint(y_coordinates[0], y_coordinates[1], y_coordinates[2], y_coordinates[3], i);
+    listOfPoints.push([coord_x, coord_y]);
+  }
+  return listOfPoints;
+}
+
+function randomBezierCurve(x, y, boxWidth, boxHeight) {
+  // extremidades da box de texto
+  options = [[x, y], [x + boxWidth, y]]
+  rand_index = int(random(0, 2));
+  // print("option: " + rand_index);
+  
+  x1 = options[rand_index][0];
+  y1 = options[rand_index][1];
+
+  if (rand_index == 0) {
+    x2 = random(x, x + boxWidth / 2)
+    y2 = random(y, boxHeight)
+  
+    x3 = random(x + boxWidth / 2, boxWidth)
+    y3 = random(y, boxHeight) + 100
   }
 
-  // print(bezierPoints.length)
-  // print(bezierPoints);
+  else {
+    x2 = random(x + boxWidth / 2, boxWidth)
+    y2 = random(y, boxHeight/2) + 100
+  
+    x3 = random(x, x + boxWidth / 2)
+    y3 = random(y, boxHeight)
+  }
+
+  if (rand_index == 0) {
+    x4 = x + boxWidth;
+    y4 = y + boxHeight; 
+  }
+
+  else {
+    x4 = x;
+    y4 = y + boxHeight; 
+  }
+
+  bezier(x1, y1, x2, y2, x3, y3, x4, y4);
 }
 
 let n = 0;
 let dir = 1;
-let numRepetitions = 4;
-let scale = 10;
+let numRepetitions = 2;
+
+
+
+
+let init = true;
+
 
 function draw() {
   background(0);
+  noFill();
+  stroke(255);
+  rect(x, y, boxWidth, boxHeight);
   micLevel = mic.getLevel();
 
-  /* noFill();
-  stroke(255, 0, 0);
-  bezier(x1, y1, x2, y2, x3, y3, x4, y4); */
-
-  // print(bezierPoints[n]);
-  /* print(n);
-  print(dir); */
+  
+  // bezier(x1, y1, x2, y2, x3, y3, x4, y4);  
+  let points = getPoints([x1, x2, x3, x4], [y1, y2, y3, y4]);
+  // print(points);
 
   print(micLevel);
 
+  if (init) {
+    randomBezierCurve(x, y, boxWidth, boxHeight);
+    init = false;
+  }
   if (numRepetitions > 0) {
-    if (dir == 1 && n < 150) n++;
-    if (n == 150 || n == 0) {dir = -1 * dir; numRepetitions--}
-    if (dir == -1 && n <= 150) n--;
+    if (dir == 1 && n < 100) n++;
+    if (n == 100 || n == 0) {dir = -1 * dir; numRepetitions--}
+    if (dir == -1 && n <= 100) n--;
   }
   else {
-    numRepetitions = 4;
-    x1 = w * random(0.05, 0.3);
-    x2 = w * random(0.2, 0.6);
-    x3 = w * 0.7;
-    x4 = w * random(0.7, 0.9);
-
-    y1 = h * 0.3;
-    y2 = h * random(0, 1.5);
-    y3 = -y2;
-    y4 = h * 0.9;
+    numRepetitions = 2;
+    randomBezierCurve(x, y, boxWidth, boxHeight);
   }
 
+  fill(255, 0, 0);
+  circle(points[n][0], points[n][1], 10);
   particles.forEach(particle => {
-    particle.update(bezierPoints[n][0] * (micLevel * 2), bezierPoints[n][1] * (micLevel * 2));
+    particle.update(/* points[n][0] * (micLevel * scale), points[n][1] * (micLevel * scale) */);
     particle.draw();
   }) 
 }

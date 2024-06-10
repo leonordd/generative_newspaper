@@ -23,7 +23,7 @@ class Particle {
 
   }
 
-  update(curveX, curveY) {
+  update(/* curveX, curveY */) {
 
     let dx, dy, distDelta;
     
@@ -34,8 +34,8 @@ class Particle {
     this.ax = dx * this.pull;
     this.ay = dy * this.pull;
 
-    dx = this.x - curveX;
-    dy = this.y - curveY;
+    dx = this.x - mouseX;
+    dy = this.y - mouseY;
 
     this.currDist = Math.sqrt(dx*dx + dy*dy);
     distDelta = this.minDist - this.currDist;
