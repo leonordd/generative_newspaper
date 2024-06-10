@@ -18,14 +18,13 @@ var hs1, hs2;
 let spacing=0;
 
 //import fetchApi from "./js/components/fetch.js";
-let newsData;
-const NEWS_URL = 'https://api.cosmicjs.com/v3/buckets/dg-project-production/objects?pretty=true&query=%7B%22type%22:%22news%22%7D&limit=10&read_key=U9g6uup9S8xDoSCPis9MuJuIoiWdhErYhdK04nWsXKbaZkVWIY&depth=1&props=slug,title,metadata,id,';
+const news_api = 'https://api.cosmicjs.com/v3/buckets/dg-project-production/objects?pretty=true&query=%7B%22type%22:%22news%22%7D&limit=10&read_key=U9g6uup9S8xDoSCPis9MuJuIoiWdhErYhdK04nWsXKbaZkVWIY&depth=1&props=slug,title,metadata,id,';
 
 //let text;
 let w = 1280;
 let h = 720;
 let boxWidth = 100;
-let boxHeight = h;
+let boxHeight = h*2;
 let x = w/2 - boxWidth*0.5;
 let y = h/2 - boxHeight*0.5;
 let letterSize = 16;
@@ -51,9 +50,32 @@ let date = new Date();
 let dat;
 let day_otw;
 
+//COSMIC
+let new_title = "";
+let new_content = ""
+let inc;
+
+//function to get data from database
+const getData = async _ => {
+  const response = await fetch(news_api);
+  let dados = await response.json();
+
+  inc = round(random(0,dados.objects.length-1));
+  console.log(dados.objects.length-1);
+  news_title = dados.objects[0].metadata.news_title;
+  news_content = dados.objects[0].metadata.news_content;
+
+  /*for(let i=0; i<dados.objects.length; i++){
+    news_title = dados.objects[i].metadata.news_title;
+    news_content = dados.objects[i].metadata.news_content;
+  }*/
+}
+
 function setup() {
   createCanvas(1280, 720);
   //mic.start();
+  getData();
+  
 
   grid = new Grid();
   gridColor=color(255,0,0);
@@ -63,7 +85,7 @@ function setup() {
   //let text = new TextBox(str, x, y, boxWidth, boxHeight, letterHeight, letterSize);
   //particles = text.getWordParticles();
   //fonts = [old_english, times, roboto];
-  fonts = ["Roboto", "Futura", "Courier New", "Montserrat", "Didot"];
+  fonts = ["Roboto", "Futura", "Montserrat", "Didot"];
   index = round(random(0, fonts.length-1));
   index2 = round(random(0, fonts.length-1));
   
@@ -107,7 +129,7 @@ function draw() {
   /* if(frameCount === 1 ){
     capturer.start();
   } */
-
+  rectMode(CORNER);
   if(micStart){
   micLevel = mic.getLevel();
   console.log("mic: " + micLevel)
@@ -133,23 +155,22 @@ function draw() {
 
   color(0);
   //grid.textGrid("texto", "nível texto", "fonte",fromx, tox, fromy, -3);
-  grid.titleGrid(day_otw, "n3", fonts[index], 0, 1, 0, -3);
-  grid.titleGrid(dat, "n3", fonts[index], 3, 5, 0, -3);
-  grid.titleGrid("No. 4", "n3", fonts[index], 7, 8, 0, -3);
-  grid.titleGrid("Wes Anderson Times", "n1", fonts[index], 0, 8, 3, -3);
-  grid.titleGrid("Who is Wes Anderson?","h1", fonts[index2], 0, 8, 10, -3);
-  grid.titleGrid("Conheça o cineasta que virou trend nas redes sociais","h2", fonts[index2], 2, 6, 14, -3);
+  grid.titleGrid(day_otw, "n3", fonts[index], 0, 1, 1, -3);
+  grid.titleGrid(dat, "n3", fonts[index], 3, 5, 1, -3);
+  grid.titleGrid("No. 4", "n3", fonts[index], 7, 8, 1, -3);
+  grid.titleGrid("Wes Anderson Times", "n1", fonts[index], 0, 8, 5, -3);
+  grid.titleGrid("Who is Wes Anderson?","h1", fonts[index2], 0, 8, 13, -3);
+  grid.titleGrid(news_title,"h2", fonts[index2], 2, 6, 19, -3);
 
-  grid.lineGrid(0,8,9,9); //xxyy
-
-  grid.lineGrid(0,8,2,2); //xxyy y+1
+  grid.lineGrid(0,8,4,4); //xxyy y+1
+  grid.lineGrid(0,8,12,12); //xxyy
 
 
   //renderTextInColumns(content, size, font, fromx, startY, columnHeight, startLines, columnHeights);
 
   //let randomBezier;
 if(aux){
-  grid.renderTextInColumns(textocosmic, 'h3', 'roboto', 0, 13, 750);
+  grid.renderTextInColumns(news_content, 'h3', 'roboto', 0, 19, 550, 6.7, 455);
 
   //for(let i=0; i<grid.info.lenght())
   //console.log("w: "+grid.info[0]["w"])
@@ -166,7 +187,7 @@ if(aux){
   let text2 = new TextBox(grid.info[1]["text"], grid.info[1]["x"],grid.info[1]["y"], grid.info[1]["width"]-marg, boxHeight, letterHeight, letterSize);
   let text3 = new TextBox(grid.info[2]["text"], grid.info[2]["x"],grid.info[2]["y"], grid.info[2]["width"]-marg, boxHeight, letterHeight, letterSize);
   let text4 = new TextBox(grid.info[3]["text"], grid.info[3]["x"],grid.info[3]["y"], grid.info[3]["width"]-marg, boxHeight, letterHeight, letterSize);
-  console.log(grid.info[0]["text"]+ grid.info[1]["text"] + grid.info[2]["text"] + grid.info[3]["text"]);
+  //console.log(grid.info[0]["text"]+ grid.info[1]["text"] + grid.info[2]["text"] + grid.info[3]["text"]);
   //let text = new TextBox(str, grid.info[0]["x"],grid.info[0]["y"], grid.info[0]["width"], boxHeight, letterHeight, letterSize);
   particles = text.getWordParticles();
   particles2 = text2.getWordParticles();
@@ -209,6 +230,10 @@ if(aux){
     aux=false;
     pop();
 
+  }else{
+    fill(255,0,0);
+    rectMode(CENTER);
+    rect(width/2,height/2, 200,100);
   }
   //circle(grid.info[0]["x"], grid.info[0]["y"], grid.info[0]["width"])
 //codigo bom

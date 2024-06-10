@@ -123,7 +123,8 @@ class Grid {
 		} else if(size == 'h2'){ //subtítulo
 			textAlign(CENTER, align)
 			scale(1,1)
-			fontSize = 34 * this.pt
+			fontSize = 38 * this.pt
+			translate(-20,0)
 			textLeading(fontSize*1);
 		} 
 	
@@ -335,12 +336,12 @@ getVisibleText(content, size, maxHeight, cols) {
 	return lines.join(' ');
 }
 
-renderTextInColumns(content, size, font, fromx, startY, columnHeight) {
+renderTextInColumns(content, size, font, fromx, startY, columnHeight, sY0,cH0) {
 	this.info = [];
 	this.isBodyText = true;
 	let currentX = fromx;
 	let currentY = startY;
-	let formattedString = content.replace(/<p>/g,'$').replace(/<\/p>/g,'');
+	let formattedString = content.replace("\n",'$');
 
 	let remainingText = formattedString;
 	let cols = 2; // Cada texto ocupa 2 colunas
@@ -364,14 +365,14 @@ renderTextInColumns(content, size, font, fromx, startY, columnHeight) {
 		}
 
 		if(i==0){
-			currentY = startY+5.7; // Ajusta a posição Y para a próxima 2
-			columnHeight=650;
+			currentY = startY+sY0; // Ajusta a posição Y para a próxima 2
+			columnHeight=cH0;
 		}else if(i==1){
-			currentY = startY+5.7; // Ajusta a posição Y para a próxima 3
-			columnHeight=703;
+			currentY = startY+sY0; // Ajusta a posição Y para a próxima 3
+			columnHeight=cH0;
 		}else if(i==2){
-			currentY = startY+1.65; // Ajusta a posição Y para a próxima 4
-			columnHeight=740;
+			currentY = startY; // Ajusta a posição Y para a próxima 4
+			columnHeight=columnHeight;
 		}
 
 		if (currentY >= this.gridY) {
