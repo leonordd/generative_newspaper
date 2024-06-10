@@ -6,6 +6,9 @@ class Grid {
 		this.gutterY = 0;
 		this.pad = 24;
 		this.pt=1;
+
+		this.info = [];
+		this.isBodyText = false;
 	  }
 	
 	gridDisplay(color) {
@@ -82,6 +85,7 @@ class Grid {
 
   
 	textGrid(content, size, font, fromx, tox, fromy, moveX=0, moveY=0, align=TOP) {
+	
 	//moveX=0, moveY=0, align=TOP
 	  let fontSize
 	  let offx, offy, x, y;
@@ -157,7 +161,24 @@ class Grid {
 	  offy = y * fromy + this.pad + this.gutterY / 2;
   }
   
-  text(content, offx - fontSize /20, (offy - fontSize / 5)/2 + moveY, (x) * (tox - fromx) - this.gutterX/2.5);
+  //let text = new TextBox(content, offx - fontSize /20, (offy - fontSize / 5)/2 + moveY, (x) * (tox - fromx) - this.//gutterX/2.5, 500, 20, 16);
+
+  //particles = text.getWordParticles();
+  //console.log(particles);
+  if(this.isBodyText){
+	let dict = {}
+	dict["text"] = content;
+	dict["x"] = offx - fontSize /20;
+	dict["y"] = (offy - fontSize / 5)/2 + moveY;
+	dict["width"] = (x) * (tox - fromx) - this.gutterX/2.5;
+	dict["height"] = 300;
+	
+	this.info.push(dict);
+  }
+  else{
+	text(content, offx - fontSize /20, (offy - fontSize / 5)/2 + moveY, (x) * (tox - fromx) - this.gutterX/2.5);
+  }
+
   pop();
   
   }
@@ -266,8 +287,10 @@ getVisibleText(content, size, maxHeight, cols) {
 		if (textWidth(testLine) > lineWidth) {
 			lines.push(currentLine);
 			currentLine = word;
+			//console.log("Olá")
 		} else {
 			currentLine = testLine;
+			//console.log("adeus")
 		}
 
 		if (lines.length * lineHeight > maxHeight) {
@@ -276,6 +299,7 @@ getVisibleText(content, size, maxHeight, cols) {
 	}
 	//lines.push(currentLine);
 
+	//console.log("LINES" + lines.join(' '));
 	return lines.join(' ');
 }
 
@@ -340,6 +364,8 @@ getVisibleText(content, size, maxHeight, cols) {
 }*/
 
 renderTextInColumns(content, size, font, fromx, startY, columnHeight) {
+	this.info = [];
+	this.isBodyText = true;
 	let currentX = fromx;
 	let currentY = startY;
 	let formattedString = content.replace(/<p>/g, '\n\n').replace(/<\/p>/g, '');
@@ -381,6 +407,7 @@ renderTextInColumns(content, size, font, fromx, startY, columnHeight) {
 			//currentY = 0; // inicializa o Y quando a altura atingir a altura máxima da grelha
 		}
 	}
+	this.isBodyText = false;
 	}
 } 
 

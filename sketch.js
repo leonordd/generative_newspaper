@@ -19,6 +19,21 @@ let spacing=0;
 let newsData;
 const NEWS_URL = 'https://api.cosmicjs.com/v3/buckets/dg-project-production/objects?pretty=true&query=%7B%22type%22:%22news%22%7D&limit=10&read_key=U9g6uup9S8xDoSCPis9MuJuIoiWdhErYhdK04nWsXKbaZkVWIY&depth=1&props=slug,title,metadata,id,';
 
+//let text;
+let w = 1280;
+let h =720;
+let boxWidth = 100;
+let boxHeight = h;
+let x = w/2 - boxWidth*0.5;
+let y = h/2 - boxHeight*0.5;
+let letterSize = 16;
+let letterHeight = letterSize + 4;
+let particles;
+//let str = "Lorem Ipsum is simply dummy text of the printing and typesetting industry.Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.";
+
+let aux = true;
+//let text ;
+
 function setup() {
   createCanvas(1280, 720);
   grid = new Grid();
@@ -26,13 +41,15 @@ function setup() {
   old_english = loadFont('assets/fonts/old_english/Monotype_Old_English_Text_W01.ttf');
   times = loadFont('assets/fonts/times/Times New Roman.ttf');
   roboto = loadFont('assets/fonts/roboto/Roboto-Regular.ttf');
-
+  //let text = new TextBox(str, x, y, boxWidth, boxHeight, letterHeight, letterSize);
+  //particles = text.getWordParticles();
   ////
   hs2 = new WScrollbar(width-16, 0, 16, height, 16);
   //newsData = ;
   //console.log(fetchApi(NEWS_URL));
 
   //fetchApi(NEWS_URL);
+  
 }
 
 function draw() {
@@ -45,12 +62,18 @@ function draw() {
   hs2.display();
   fill(0);
   
+ 
 
   rect(100,-img2Pos,100,height/2);
   
   var img2Pos = hs2.getPos();
+  push();
   translate(0,-img2Pos);
-  grid.gridDisplay(gridColor);
+
+  //grid.gridDisplay(gridColor);
+
+
+
 
   color(0);
   //grid.textGrid("texto", "nível texto", "fonte",fromx, tox, fromy, -3);
@@ -62,16 +85,31 @@ function draw() {
   grid.textGrid("Conheça o cineasta que virou trend nas redes sociais","h2", "times", 2, 6, 14, -3);
 
   grid.lineGrid(0,8,9,9); //xxyy
-  //translate(0,-30);
+
   grid.lineGrid(0,8,2,2); //xxyy y+1
 
 
-  let startLines = [2, 5, 8]; // Linhas iniciais para cada coluna
-  let columnHeights = [100, 150, 200]; // Alturas para cada coluna
   //renderTextInColumns(content, size, font, fromx, startY, columnHeight, startLines, columnHeights);
-  grid.renderTextInColumns(textocosmic, 'h3', 'roboto', 0, 13, 830);
-  
+ 
 
+if(aux){
+  grid.renderTextInColumns(textocosmic, 'h3', 'roboto', 0, 15, 930);
+
+  //for(let i=0; i<grid.info.lenght())
+  //console.log("w: "+grid.info[0]["w"])
+  console.log(grid.info[0]);
+  
+  let text = new TextBox(grid.info[0]["text"], grid.info[0]["x"],grid.info[0]["y"], grid.info[0]["width"], boxHeight, letterHeight, letterSize);
+  //let text = new TextBox(str, grid.info[0]["x"],grid.info[0]["y"], grid.info[0]["width"], boxHeight, letterHeight, letterSize);
+  particles = text.getWordParticles();
+  aux=false;
+}
+  particles.forEach(particle => {
+    particle.update(/*points[n][0] * (micLevel * scale), points[n][1] * (micLevel * scale)*/);
+    particle.draw();
+  })
+pop();
+  //circle(grid.info[0]["x"], grid.info[0]["y"], grid.info[0]["width"])
 //codigo bom
 /*let alturasTexto = [];
 let posIni = [];
