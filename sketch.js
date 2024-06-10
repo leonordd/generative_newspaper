@@ -33,9 +33,21 @@ let particles;
 
 let aux = true;
 //let text ;
+let index, index2; 
+let fonts = []; 
+let fonts2 = []; 
+let randomBezier;
+let s=50; //define a escala
+let n=0;
+let dir=1;
+let points;
+let mic;
 
 function setup() {
   createCanvas(1280, 720);
+  mic = new p5.AudioIn()
+  mic.start();
+  
   grid = new Grid();
   gridColor=color(255,0,0);
   old_english = loadFont('assets/fonts/old_english/Monotype_Old_English_Text_W01.ttf');
@@ -43,17 +55,19 @@ function setup() {
   roboto = loadFont('assets/fonts/roboto/Roboto-Regular.ttf');
   //let text = new TextBox(str, x, y, boxWidth, boxHeight, letterHeight, letterSize);
   //particles = text.getWordParticles();
-  ////
-  hs2 = new WScrollbar(width-16, 0, 16, height, 16);
-  //newsData = ;
-  //console.log(fetchApi(NEWS_URL));
-
-  //fetchApi(NEWS_URL);
+  //fonts = [old_english, times, roboto];
+  fonts = ["Roboto", "Futura", "Courier New", "Montserrat", "Didot"];
+  index = round(random(0, fonts.length-1));
+  index2 = round(random(0, fonts.length-1));
   
+  hs2 = new WScrollbar(width-16, 0, 16, height, 16);
+  randomBezier = new RandomBezier();
 }
 
 function draw() {
   background('#fee7de');
+  micLevel = mic.getLevel();
+  console.log("mic: " + micLevel)
 
   translate(0,0);
   fill(255, 0, 0);
@@ -62,8 +76,6 @@ function draw() {
   hs2.display();
   fill(0);
   
- 
-
   rect(100,-img2Pos,100,height/2);
   
   var img2Pos = hs2.getPos();
@@ -72,17 +84,18 @@ function draw() {
 
   //grid.gridDisplay(gridColor);
 
-
-
+  if (dir == 1 && n < 100) n++;
+  if (n == 100 || n == 0) {dir = -1 * dir;}
+  if (dir == -1 && n <= 100) n--;
 
   color(0);
   //grid.textGrid("texto", "nível texto", "fonte",fromx, tox, fromy, -3);
-  grid.textGrid("WA", "n3", "old", 0, 1, 0, -3);
-  grid.textGrid("5 de maio de 2024", "n3", "old", 3, 5, 0, -3);
-  grid.textGrid("nº4", "n3", "old", 7, 8, 0, -3);
-  grid.textGrid("Wes Anderson Times", "n1", "old", 0, 8, 3, -3);
-  grid.textGrid("Quem é Wes Anderson?","h1", "times", 0, 8, 10, -3);
-  grid.textGrid("Conheça o cineasta que virou trend nas redes sociais","h2", "times", 2, 6, 14, -3);
+  grid.titleGrid("WA", "n3", fonts[index], 0, 1, 0, -3);
+  grid.titleGrid("5 de maio de 2024", "n3", fonts[index], 3, 5, 0, -3);
+  grid.titleGrid("nº4", "n3", fonts[index], 7, 8, 0, -3);
+  grid.titleGrid("Wes Anderson Times", "n1", fonts[index], 0, 8, 3, -3);
+  grid.titleGrid("Quem é Wes Anderson?","h1", fonts[index2], 0, 8, 10, -3);
+  grid.titleGrid("Conheça o cineasta que virou trend nas redes sociais","h2", fonts[index2], 2, 6, 14, -3);
 
   grid.lineGrid(0,8,9,9); //xxyy
 
@@ -90,24 +103,47 @@ function draw() {
 
 
   //renderTextInColumns(content, size, font, fromx, startY, columnHeight, startLines, columnHeights);
- 
 
+  //let randomBezier;
 if(aux){
-  grid.renderTextInColumns(textocosmic, 'h3', 'roboto', 0, 15, 930);
+  grid.renderTextInColumns(textocosmic, 'h3', 'roboto', 0, 15, 800);
 
   //for(let i=0; i<grid.info.lenght())
   //console.log("w: "+grid.info[0]["w"])
+  let col=4;
   console.log(grid.info[0]);
-  
+ //randomBezier = new RandomBezier(grid.info[0]["x"],grid.info[0]["y"], grid.info[0]["width"], boxHeight);
+ randomBezier.randomBezierCurve(grid.info[0]["x"],grid.info[0]["y"], grid.info[0]["width"], boxHeight)
   let text = new TextBox(grid.info[0]["text"], grid.info[0]["x"],grid.info[0]["y"], grid.info[0]["width"], boxHeight, letterHeight, letterSize);
   //let text = new TextBox(str, grid.info[0]["x"],grid.info[0]["y"], grid.info[0]["width"], boxHeight, letterHeight, letterSize);
   particles = text.getWordParticles();
+
+  
+  
+  
+  let text2 = new TextBox(grid.info[1]["text"], grid.info[1]["x"],grid.info[1]["y"], grid.info[1]["width"], boxHeight, letterHeight, letterSize);
+  //let text = new TextBox(str, grid.info[0]["x"],grid.info[0]["y"], grid.info[0]["width"], boxHeight, letterHeight, letterSize);
+  particles2 = text2.getWordParticles();
   aux=false;
+
+  console.log(randomBezier);
+let dic = randomBezier.randomBezierCurve(grid.info[0]["x"],grid.info[0]["y"], grid.info[0]["width"], boxHeight)
+console.log(dic);
+
+  points = randomBezier.getPoints([dic["x1"], dic["x2"], dic["x3"], dic["x4"]], [dic["y1"], dic["y2"], dic["y3"], dic["y4"]]);
+  console.log(points);
 }
+
+
   particles.forEach(particle => {
-    particle.update(/*points[n][0] * (micLevel * scale), points[n][1] * (micLevel * scale)*/);
+    particle.update(points[n][0] * (micLevel * s), points[n][1] * (micLevel * s));
     particle.draw();
   })
+
+  /*particles2.forEach(particle => {
+    particle.update(points[n][0] * (micLevel * s), points[n][1] * (micLevel * s));
+    particle.draw();
+  })*/
 pop();
   //circle(grid.info[0]["x"], grid.info[0]["y"], grid.info[0]["width"])
 //codigo bom
@@ -129,84 +165,4 @@ for (let i = 0; i < paragraphs.length; i++) {
 	}
 }*/
 
-
-//codigo menos bom
-/*let currentX = 0;
-    let currentY = 14;
-    const colsPerTextBlock = 2;
-
-    for (let i = 0; i < paragraphs.length; i++) {
-        let textHeight = grid.textGridHeight(paragraphs[i], "h3", "roboto", currentX, currentX + colsPerTextBlock, currentY);
-
-        if (currentY + textHeight > grid.gridY) {
-            currentX += colsPerTextBlock;
-            currentY = 19;
-            if (currentX + colsPerTextBlock > grid.gridX) {
-                break; // Se não houver mais espaço, saia do loop
-            }
-        }
-
-        grid.textGrid(paragraphs[i], "h3", "roboto", currentX, currentX + colsPerTextBlock, currentY, -3);
-        currentY += ceil(textHeight) + 1; // Adicione uma linha de espaçamento entre blocos de texto
-    }*/
-
-  /*for (let i = 0; i < paragraphs.length; i++) {
-  }
-
-  let posIni0=14;
-	let posIni1, posIni2
-	let alturaTexto0, alturaTexto1, alturaTexto2;
-		//console.log("Altura do Texto Inicial: " + alturaTexto);
-		//console.log("Pos:" + (posIni +(i * (alturaTexto+2))))
-		alturaTexto0 = grid.textHeight(paragraphs[0], "h3", 2);
-		//console.log("alttext0: " + alturaTexto0);
-		alturaTexto1 = grid.textHeight(paragraphs[1], "h3", 2);
-		//console.log("alttext1: " + alturaTexto1);
-		posIni1 = posIni0 + alturaTexto0;
-		//console.log("posIni1: " + posIni1);
-		posIni2 = posIni1 + alturaTexto1;
-	
-
-	grid.textGrid(paragraphs[0], "h3", "roboto", 0, 2, (posIni0), -3); 
-	grid.textGrid(paragraphs[1], "h3", "roboto", 0, 2, (posIni1 +2), -3);
-	grid.textGrid(paragraphs[2], "h3", "roboto", 0, 2, (posIni2 +3), -3);
-	
-*/
-
-  /*grid.textGrid(texto2, "h3", "roboto", 2, 4, 4 - 1, -3);
-  grid.textGrid(texto2, "h3", "roboto", 2, 4, 31 - 1, -3);
-  grid.textGrid(texto2, "h3", "roboto", 2, 4, 45 - 1, -3);*/
 }
-
-
-/*function splitIntoParagraphs(text) {
-	// Split the text into paragraphs based on <p> tags
-	let regex = /<p>(.*?)<\/p>/g;
-	let matches = text.match(regex);
-	let paragraphs = [];
-	if (matches) {
-	  for (let i = 0; i < matches.length; i++) {
-		// Remove <p> and </p> tags from each match
-		let paragraph = matches[i].replace(/<\/?p>/g, '');
-		paragraphs.push(paragraph);
-	  }
-	}
-	return paragraphs;
-}*/
-
-/*function fetchApi(apiUrl) {
-	loadJSON(apiUrl, gotData(apiUrl), 'json', handleError);
-
-}
-  
-  function gotData(data) {
-	console.log("Fetch API component:");
-	console.log(data);
-	let title = data.objects[0].metadata.news_title;
-	console.log(title);
-
-  }
-  
-  function handleError(error) {
-	console.error('Fetching error:', error);
-  }*/

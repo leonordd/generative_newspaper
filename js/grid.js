@@ -83,6 +83,78 @@ class Grid {
 
 	}
 
+	  
+	titleGrid(content, size, font, fromx, tox, fromy, moveX=0, moveY=0, align=TOP) {
+	
+		//moveX=0, moveY=0, align=TOP
+		  let fontSize
+		  let offx, offy, x, y;
+	  
+		  x = (width - this.pad * 2) / (this.gridX)
+		  y = (2*height - this.pad * 2) / (this.gridY)
+	  
+		  fill(0);
+		  push()
+		  if (size == 'n1') {
+			textAlign(CENTER, align)
+			 translate(0,15);
+			  scale(1,1)
+			  fontSize = 105 * this.pt
+			  textLeading(fontSize*1.15);
+			  //translate(0,60);
+		  } else if (size == 'n2') {
+			textAlign(LEFT, align)
+			//translate(0, 100)
+			scale(1.02, 1.02)
+			fontSize = 16 * this.pt
+			textLeading(fontSize*1.1);
+		  } else if (size == 'n3') {
+			textAlign(CENTER, align)
+			//translate(-3, -3.5)
+			//scale(1.02, 1.02)
+			fontSize = 20 * this.pt
+			//textLeading(fontSize*1.1);
+		} else if(size == 'h1'){ //título
+			content=content.toUpperCase();
+			textAlign(CENTER, align);
+			scale(1,1);
+			fontSize = 80 * this.pt;
+			textLeading(fontSize*1);
+		} else if(size == 'h2'){ //subtítulo
+			textAlign(CENTER, align)
+			scale(1,1)
+			fontSize = 34 * this.pt
+			textLeading(fontSize*1);
+		} 
+	
+		
+		textFont(font);
+		  textWrap(WORD)
+		  textSize(fontSize)
+		  noStroke()
+	
+	
+	  if (fromx == 0) {
+		  offx = this.pad;
+	  } else {
+		  offx = x * fromx + this.pad + this.gutterX / 2;
+	  }
+	
+	  fromy=fromy*2;
+	
+	  if (fromy == 0) {
+		  offy = this.pad;
+	  } else if (fromy == this.gridY) {
+		  offy = height - this.pad + fontSize / 5;
+		  /*translate(0, -8);*/
+	  } else {
+		  offy = y * fromy + this.pad + this.gutterY / 2;
+	  }
+	text(content, offx - fontSize /20, (offy - fontSize / 5)/2 + moveY, (x) * (tox - fromx) - this.gutterX/2.5);
+	
+	  pop();
+	  
+	  }
   
 	textGrid(content, size, font, fromx, tox, fromy, moveX=0, moveY=0, align=TOP) {
 	
@@ -95,48 +167,15 @@ class Grid {
   
 	  fill(0);
 	  push()
-	  if (size == 'n1') {
-		textAlign(CENTER, align)
-		  scale(1,1)
-		  fontSize = 100 * this.pt
-		  textLeading(fontSize*1.15);
-		  //translate(0,60);
-	  } else if (size == 'n2') {
-		textAlign(LEFT, align)
-		//translate(0, 100)
-		scale(1.02, 1.02)
-		fontSize = 16 * this.pt
-		textLeading(fontSize*1.1);
-	  } else if (size == 'n3') {
-		textAlign(CENTER, align)
-		//translate(-3, -3.5)
-		//scale(1.02, 1.02)
-		fontSize = 20 * this.pt
-		//textLeading(fontSize*1.1);
-	} else if(size == 'h1'){ //título
-		content=content.toUpperCase();
-		textAlign(CENTER, align);
-		scale(1,1);
-		fontSize = 90 * this.pt;
-		textLeading(fontSize*1);
-	} else if(size == 'h2'){ //subtítulo
-		textAlign(CENTER, align)
-		scale(1,1)
-		fontSize = 48 * this.pt
-		textLeading(fontSize*1);
-	} else if(size == 'h3'){ //texto normal
+
+	  if(size=='h3'){
 		textAlign(LEFT, align)
 		translate(0, 0)
 		//scale(1.02, 1.02)
 		fontSize = 16 * this.pt
-		//textLeading(fontSize*1.1);
-	}
+	  }
 
-	if(font == 'old'){
-		textFont(old_english);
-	}else if(font=='times'){
-		textFont(times);
-	}else if(font=='roboto'){
+	if(font=='roboto'){
 		textFont(roboto);
 	}
 	  textWrap(WORD)
@@ -165,7 +204,6 @@ class Grid {
 
   //particles = text.getWordParticles();
   //console.log(particles);
-  if(this.isBodyText){
 	let dict = {}
 	dict["text"] = content;
 	dict["x"] = offx - fontSize /20;
@@ -174,11 +212,6 @@ class Grid {
 	dict["height"] = 300;
 	
 	this.info.push(dict);
-  }
-  else{
-	text(content, offx - fontSize /20, (offy - fontSize / 5)/2 + moveY, (x) * (tox - fromx) - this.gutterX/2.5);
-  }
-
   pop();
   
   }
@@ -299,7 +332,7 @@ getVisibleText(content, size, maxHeight, cols) {
 	}
 	//lines.push(currentLine);
 
-	//console.log("LINES" + lines.join(' '));
+	console.log("LINES" + lines.join(' '));
 	return lines.join(' ');
 }
 
@@ -392,13 +425,13 @@ renderTextInColumns(content, size, font, fromx, startY, columnHeight) {
 		}
 
 		if(i==0){
-			currentY = startY+6; // Ajusta a posição Y para a próxima 2
-			columnHeight=700;
+			currentY = startY+4; // Ajusta a posição Y para a próxima 2
+			columnHeight=701;
 		}else if(i==1){
-			currentY = startY+6; // Ajusta a posição Y para a próxima 3
+			currentY = startY+4; // Ajusta a posição Y para a próxima 3
 			columnHeight=710;
 		}else if(i==2){
-			currentY = startY+3; // Ajusta a posição Y para a próxima 4
+			currentY = startY+2; // Ajusta a posição Y para a próxima 4
 			columnHeight=872;
 		}
 
