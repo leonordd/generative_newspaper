@@ -19,7 +19,7 @@ else:
 # "The first line should be the title of the article, the second line should be the subtitle, and the rest of the text should be the article itself. "
    
 prompt = (
-    "write me an original news article about wes anderson. it must have 900 words (mandatory). use <p> tags sometimes. do not use markdown formatting (mandatory). be creative. don't retrive any other information that hasn't to do with the news article"
+    "write an original news article about wes anderson. the news article must have 1000 words (mandatory). do not use markdown formatting (mandatory). use <p> tags sometimes. the firt paragraph should be the title with 8 words maximum. be creative. don't retrive any other information that hasn't to do with the news article"
 )
 
 
@@ -28,7 +28,7 @@ prompt = (
 
 for i in range(n): """
 with open(f"{new_dir}/news_articles.txt", "a") as file:
-    for chunks in llm.stream(prompt):
+    for chunks in llm.stream(prompt, num_predict=1000, temperature=0.8):
         print(chunks, end="")
         file.write(chunks)
 
