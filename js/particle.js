@@ -63,7 +63,6 @@ class Particle {
     fill(0,0,0);
     if (this.diff > 30) this.size = 30;
     else this.size = letterSize;
-    //textFont(eb_garamond);
     textSize(this.size);
     text(this.letter, this.x, this.y);
   }
