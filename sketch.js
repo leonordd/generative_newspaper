@@ -77,8 +77,8 @@ function preload() {
   jost= loadFont('assets/fonts/jost/Jost-Regular.ttf');
   lato = loadFont('assets/fonts/Lato/Lato-Regular.ttf');
   montserrat = loadFont('assets/fonts/montserrat/Montserrat-Regular.ttf');
-  montserrat2 = loadFont('assets/fonts/montserrat/Montserrat-Semibold.ttf');
-  montserrat3 = loadFont('assets/fonts/montserrat/Montserrat-Bold.ttf');
+  //montserrat2 = loadFont('assets/fonts/montserrat/Montserrat-Semibold.ttf');
+  //montserrat3 = loadFont('assets/fonts/montserrat/Montserrat-Bold.ttf');
   open_sans = loadFont('assets/fonts/Open_Sans/OpenSans-Regular.ttf');
   oswald = loadFont('assets/fonts/Oswald/Oswald-Regular.ttf');
   outfit = loadFont('assets/fonts/outfit/Outfit-Regular.ttf');
@@ -200,7 +200,7 @@ function draw() {
     push();
     translate(0,-img2Pos);
 
-    //grid.gridDisplay(gridColor);
+    grid.gridDisplay(gridColor);
 
     if (dir == 1 && n < 100) n++;
     if (n == 100 || n == 0) {dir = -1 * dir;}
