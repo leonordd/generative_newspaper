@@ -341,8 +341,8 @@ renderTextInColumns(content, size, font, fromx, startY, columnHeight, sY0,cH0) {
 	this.isBodyText = true;
 	let currentX = fromx;
 	let currentY = startY;
-	let formattedString = content.replace("\n",'$');
-
+	// let formattedString = content.replace("\n",'$');
+	let formattedString = content.replace(/<p>/g, '$').replace(/<\/p>/g, '$');
 	let remainingText = formattedString;
 	let cols = 2; // Cada texto ocupa 2 colunas
 	let totalColumns = floor((this.gridX - fromx) / cols);

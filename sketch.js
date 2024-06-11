@@ -27,8 +27,8 @@ let boxWidth = 100;
 let boxHeight = h*2;
 let x = w/2 - boxWidth*0.5;
 let y = h/2 - boxHeight*0.5;
-let letterSize = 16;
-let letterHeight = letterSize + 4;
+let letterSize = 16
+let letterHeight/*  = letterSize + 4 */;
 let particles, particles2,  particles3,  particles4;
 //let str = "Lorem Ipsum is simply dummy text of the printing and typesetting industry.Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.";
 
@@ -45,7 +45,8 @@ let dir=1;
 let points, points2, points3, points4;
 let mic;
 let micStart=false;
-let marg = 45;
+// @leonor tive de reajustar aqui a margem
+let marg = 52;
 let date = new Date();
 let dat;
 let day_otw;
@@ -62,8 +63,8 @@ const getData = async _ => {
 
   inc = round(random(0,dados.objects.length-1));
   console.log(dados.objects.length-1);
-  news_title = dados.objects[0].metadata.news_title;
-  news_content = dados.objects[0].metadata.news_content;
+  news_title = dados.objects[1].metadata.news_title;
+  news_content = dados.objects[1].metadata.news_content;
 
   /*for(let i=0; i<dados.objects.length; i++){
     news_title = dados.objects[i].metadata.news_title;
@@ -76,7 +77,8 @@ function setup() {
   //mic.start();
   getData();
   
-
+  textSize(letterSize);
+  letterHeight = textAscent() + textDescent();
   grid = new Grid();
   gridColor=color(255,0,0);
   old_english = loadFont('assets/fonts/old_english/Monotype_Old_English_Text_W01.ttf');
