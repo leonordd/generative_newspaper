@@ -53,8 +53,9 @@ let day_otw;
 
 //COSMIC
 let new_title = "";
-let new_content = ""
+let new_content = "";
 let inc;
+let xx, yy,ww,hh;
 
 //function to get data from database
 const getData = async _ => {
@@ -107,26 +108,47 @@ function setup() {
   dat = month_t[month] + " " + day + ", " + year;
 
   let day_otw_t = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-  day_otw = day_otw_t[day_of_the_week ];
+  day_otw = day_otw_t[day_of_the_week];
+
+  //botão inicial
+  xx = w/2;
+  yy = h/2;
+  ww = 200;
+  hh = 80;
 }
 
-function keyPressed() {
+/*function keyPressed() {
   if (key === ' ') {
-      if (getAudioContext().state !== 'running') {
-          getAudioContext().resume().then(() => {
-              console.log('Audio context resumed');
-              // Adicione aqui o seu código de som
-              mic = new p5.AudioIn()
-              mic.start();
-              micStart = true;
-          });
-      }
+  if (getAudioContext().state !== 'running') {
+      getAudioContext().resume().then(() => {
+          console.log('Audio context resumed');
+          // Adicione aqui o seu código de som
+          mic = new p5.AudioIn()
+          mic.start();
+          micStart = true;
+      });
+  }
+}
+}*/
+
+function mousePressed(){
+  if((mouseX>(xx-ww)) && (mouseX<(xx+ww)) && (mouseY>(yy-hh)) && (mouseY<(yy+hh))){
+    //cursor(HAND);
+    if (getAudioContext().state !== 'running') {
+      getAudioContext().resume().then(() => {
+          console.log('Audio context resumed');
+          // Adicione aqui o seu código de som
+          mic = new p5.AudioIn()
+          mic.start();
+          micStart = true;
+      });
+  }
   }
 }
 
 function draw() {
-  background('#fee7de');
-
+  background('#FFE5E4');
+  //background('#fee7de');
   //@xanaaaa descomenta isto
   /* if(frameCount === 1 ){
     capturer.start();
@@ -172,6 +194,7 @@ function draw() {
 
   //let randomBezier;
 if(aux){
+  cursor(ARROW);
   grid.renderTextInColumns(news_content, 'h3', 'roboto', 0, 19, 550, 6.7, 455);
 
   //for(let i=0; i<grid.info.lenght())
@@ -232,10 +255,31 @@ if(aux){
     aux=false;
     pop();
 
-  }else{
-    fill(255,0,0);
+  } else{ //mic ainda não começou 
+
+    if((mouseX>(xx-ww)) && (mouseX<(xx+ww)) && (mouseY>(yy-hh)) && (mouseY<(yy+hh))){
+      fill('#FFFFFF');
+      //print("sim");
+      cursor(HAND);
+    }else{
+      fill('#B0001B');
+      cursor(ARROW);
+    }
+    noStroke();
     rectMode(CENTER);
-    rect(width/2,height/2, 200,100);
+    rect(xx, yy, ww, hh, 10);
+
+
+    if((mouseX>(xx-ww)) && (mouseX<(xx+ww)) && (mouseY>(yy-hh)) && (mouseY<(yy+hh))){
+      fill('#B0001B');
+    }else{
+      fill(255);
+    }
+    stroke(0);
+    textSize(22);
+    //textAlign(CENTER);
+    text("COMEÇAR", xx-60, yy+10);
+    
   }
   //circle(grid.info[0]["x"], grid.info[0]["y"], grid.info[0]["width"])
 //codigo bom
