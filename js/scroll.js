@@ -53,20 +53,19 @@ function WScrollbar(xp, yp, sw, sh, l) {
   
 	this.display = function() {
 	  noStroke();
-	  fill(204);
+	  noFill();
 	  rect(this.xpos, this.ypos, this.swidth, this.sheight);
 	  if (this.over || this.locked) {
-		fill(0, 0, 0);
+		fill("#9F295D");
 	  } else {
-		fill(102, 102, 102);
+		fill('#642E68');
 	  }
 	 
 	 rect(this.xpos, this.spos, this.swidth, this.swidth, 30);
 	}
   
 	this.getPos = function() {
-	  // Convert spos to be values between
-	  // 0 and the total height of the scrollbar
+	  // Converte spos para valores entre 0 e a altura total da scrollbar
 	  return (this.spos - this.ypos) * this.ratio;
 	}
 	

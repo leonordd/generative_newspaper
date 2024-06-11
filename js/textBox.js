@@ -7,6 +7,7 @@ class TextBox {
         this.boxHeight = boxHeight;
         this.letterHeight = letterHeight;
         this.letterSize = letterSize;
+ 
     }
 
 

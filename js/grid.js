@@ -176,9 +176,12 @@ class Grid {
 		fontSize = 16 * this.pt
 	  }
 
-	if(font=='roboto'){
+	/*if(font=='roboto'){
 		textFont(roboto);
-	}
+	}else if(font =='garamond'){
+		textFont(eb_garamond);
+	}*/
+	textFont(font);
 	  textWrap(WORD)
 	  textSize(fontSize)
 	  noStroke()
