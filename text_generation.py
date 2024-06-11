@@ -1,6 +1,7 @@
 from langchain_community.llms import Ollama
+import requests
+import json
 import os
-
 
 
 llm = Ollama(model="llama3",
@@ -16,21 +17,47 @@ if not os.path.exists(new_dir):
 else:
     print(f"{curr_dir}/{new_dir} already exists.")
 
-# "The first line should be the title of the article, the second line should be the subtitle, and the rest of the text should be the article itself. "
-   
 prompt = (
-    "write an original news article about wes anderson. the news article must have 1000 words (mandatory). do not use markdown formatting (mandatory). use <p> tags sometimes. the firt paragraph should be the title with 8 words maximum. be creative. don't retrive any other information that hasn't to do with the news article"
+    "write an original news article about wes anderson.",
+    "the news article must have 1000 words (mandatory).", 
+    "do not use markdown formatting (mandatory)."
+    "use <p> tags sometimes.",
+    "the firt paragraph should be the title with 8 words maximum."
+    "be creative."
+    "don't retrive any other information that hasn't to do with the news article"
 )
 
+n = 15
+
+for i in range(n):
+    with open(f"{new_dir}/news_articles_{i + 5}.txt", "a") as file:
+        for chunks in llm.stream(prompt, num_predict=1000, temperature=0.8):
+            # print(chunks, end="")
+            file.write(chunks)
 
 
-""" n = 5
+# send generated text to cosmic
 
-for i in range(n): """
-with open(f"{new_dir}/news_articles.txt", "a") as file:
-    for chunks in llm.stream(prompt, num_predict=1000, temperature=0.8):
-        print(chunks, end="")
-        file.write(chunks)
+""" BUCKET_SLUG = 'dg-project-production'
+BUCKET_WRITE_KEY = 'EofsWLOKvGelAe2xwX1TCurgPXE9tOiaYrV8XVqW7gfptRuZqK'
 
+url = f"https://api.cosmicjs.com/v3/buckets/{BUCKET_SLUG}/objects"
 
-# Print the response
+headers = {
+    'Content-Type': 'application/json',
+    'Authorization': f'Bearer {BUCKET_WRITE_KEY}'
+}
+
+data = {
+    "title": "generated_news_?",
+    "type": "news",
+    "metadata": {
+        "news_title" : "",
+        "news_content": "",
+    }
+} """
+
+response = requests.post(url, headers=headers, data=json.dumps(data))
+
+print(response.status_code)
+print(response.json())
