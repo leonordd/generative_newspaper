@@ -7,8 +7,7 @@ A generative newspaper inspired by Wes Anderson's film Grand Budapest Hotel.
 @leonordd
 ## Moodboard
 <center>
-    <img src="imgs/jornal.png" height=150>
-    <img src="imgs/inspo.png" height=150>
+    <img src="imgs/jornal.png" height=250>
 </center>
 
 ## Output
