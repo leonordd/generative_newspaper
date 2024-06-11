@@ -17,16 +17,9 @@ else:
     print(f"{curr_dir}/{new_dir} already exists.")
 
 # "The first line should be the title of the article, the second line should be the subtitle, and the rest of the text should be the article itself. "
+   
 prompt = (
-    "Write 3 original news articles about film director Wes Anderson. "
-    "Each article should include a title and body. "
-    "Separate each news article with ###. "
-    "Separate each section (title and body) with a new line. "
-    "Do not use markdown syntax such as asterisks or underscores for formatting. Quotation marks are allowed. "
-    "Keep each article between 300 and 500 words. "
-    "Ensure each news article is significantly different. "
-    "Be original."
-    "Do not give introduction text. Jump right into the news articles content"
+    "write me an original news article about wes anderson. it must have 900 words (mandatory). use <p> tags sometimes. do not use markdown formatting (mandatory). be creative. don't retrive any other information that hasn't to do with the news article"
 )
 
 
