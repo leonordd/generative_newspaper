@@ -245,51 +245,6 @@ class Grid {
 	pop();
   }
 
-
-  /*textGridHeight(content, size, font, fromx, tox, fromy) {
-    let fontSize, x, y;
-
-    x = (width - this.pad * 2) / (this.gridX);
-    y = (2 * height - this.pad * 2) / (this.gridY);
-
-    if (size == 'n1') {
-        fontSize = 100 * this.pt;
-    } else if (size == 'n2') {
-        fontSize = 16 * this.pt;
-    } else if (size == 'n3') {
-        fontSize = 20 * this.pt;
-    } else if (size == 'h1') {
-        fontSize = 90 * this.pt;
-    } else if (size == 'h2') {
-        fontSize = 48 * this.pt;
-    } else if (size == 'h3') {
-        fontSize = 16 * this.pt;
-    }
-
-    textSize(fontSize);
-
-    let lineHeight = textAscent() + textDescent();
-    let lineWidth = (width - this.pad * 2) / this.gridX * (tox - fromx) - this.gutterX / 2.5;
-    let words = content.split(' ');
-    let lines = [];
-    let currentLine = words[0];
-
-    for (let i = 1; i < words.length; i++) {
-        let word = words[i];
-        let testLine = currentLine + ' ' + word;
-        if (textWidth(testLine) > lineWidth) {
-            lines.push(currentLine);
-            currentLine = word;
-        } else {
-            currentLine = testLine;
-        }
-    }
-    lines.push(currentLine);
-
-    let textHeight = lines.length * lineHeight;
-    return textHeight / y; // Retorna a altura do texto em unidades de grid
-}*/
-
 getVisibleText(content, size, maxHeight, cols) {
 	let fontSize;
 
@@ -320,68 +275,69 @@ getVisibleText(content, size, maxHeight, cols) {
 		if (textWidth(testLine) > lineWidth) {
 			lines.push(currentLine);
 			currentLine = word;
-			//console.log("Olá")
 		} else {
 			currentLine = testLine;
-			//console.log("adeus")
 		}
 
 		if (lines.length * lineHeight > maxHeight) {
 			break;
 		}
 	}
-	//lines.push(currentLine);
 
-	console.log("LINES" + lines.join(' '));
+	// Push the last line
+	if (currentLine) {
+		lines.push(currentLine);
+	}
+
+	console.log("LINES " + lines.join(' '));
 	return lines.join(' ');
 }
 
-renderTextInColumns(content, size, font, fromx, startY, columnHeight, sY0,cH0) {
+renderTextInColumns(content, size, font, fromx, startY, columnHeight, sY0, cH0) {
 	this.info = [];
 	this.isBodyText = true;
 	let currentX = fromx;
 	let currentY = startY;
-	// let formattedString = content.replace("\n",'$');
 	let formattedString = content.replace(/<p>/g, '$').replace(/<\/p>/g, '$');
 	let remainingText = formattedString;
 	let cols = 2; // Cada texto ocupa 2 colunas
 	let totalColumns = floor((this.gridX - fromx) / cols);
-	//console.log("totalColumns"+totalColumns)
-	//console.log("Y:"+currentY);
 
 	for (let i = 0; i < totalColumns; i++) {
 		if (remainingText.length <= 0) {
 			break;
 		}
+
 		let visibleText = this.getVisibleText(remainingText, size, columnHeight, cols);
-		
 		this.textGrid(visibleText, size, font, currentX, currentX + cols, currentY);
 
-		remainingText = remainingText.slice(visibleText.length);
-		//console.log(remainingText);
+		// Update remainingText using words processed to avoid issues with special characters
+		let visibleWords = visibleText.split(' ');
+		remainingText = remainingText.split(' ').slice(visibleWords.length).join(' ');
+
 		currentX = currentX + cols;
 		if (currentX >= this.gridX) {
 			break;
 		}
 
-		if(i==0){
-			currentY = startY+sY0; // Ajusta a posição Y para a próxima 2
-			columnHeight=cH0;
-		}else if(i==1){
-			currentY = startY+sY0; // Ajusta a posição Y para a próxima 3
-			columnHeight=cH0;
-		}else if(i==2){
+		if (i == 0) {
+			currentY = startY + sY0; // Ajusta a posição Y para a próxima 2
+			columnHeight = cH0;
+		} else if (i == 1) {
+			currentY = startY + sY0; // Ajusta a posição Y para a próxima 3
+			columnHeight = cH0;
+		} else if (i == 2) {
 			currentY = startY; // Ajusta a posição Y para a próxima 4
-			columnHeight=columnHeight;
+			columnHeight = columnHeight;
 		}
 
 		if (currentY >= this.gridY) {
 			currentY = 0;
-			//currentY = 0; // inicializa o Y quando a altura atingir a altura máxima da grelha
 		}
 	}
 	this.isBodyText = false;
-	}
+}
+	
 } 
 
 
