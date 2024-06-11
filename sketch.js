@@ -112,7 +112,7 @@ function setup() {
 
   //botão inicial
   xx = w/2;
-  yy = h/2;
+  yy = h/2+100;
   ww = 200;
   hh = 80;
 }
@@ -181,8 +181,8 @@ function draw() {
   //grid.textGrid("texto", "nível texto", "fonte",fromx, tox, fromy, -3);
   grid.titleGrid(day_otw, "n3", fonts[index], 0, 1, 1, -3);
   grid.titleGrid(dat, "n3", fonts[index], 3, 5, 1, -3);
-  grid.titleGrid("No. 4", "n3", fonts[index], 7, 8, 1, -3);
-  grid.titleGrid("Wes Anderson Times", "n1", fonts[index], 0, 8, 5, -3);
+  grid.titleGrid("No. 1", "n3", fonts[index], 7, 8, 1, -3);
+  grid.titleGrid("Wes Anderson Times", "n1", old_english, 0, 8, 5, -3);
   grid.titleGrid("Who is Wes Anderson?","h1", fonts[index2], 0, 8, 13, -3);
   grid.titleGrid(news_title,"h2", fonts[index2], 2, 6, 19, -3);
 
@@ -256,13 +256,15 @@ if(aux){
     pop();
 
   } else{ //mic ainda não começou 
-
+    grid.titleGrid("Wes Anderson Times", "n1", old_english, 0, 8, 5, -3);
+    grid.lineGrid(0,8,4,4); //xxyy y+1
+    grid.lineGrid(0,8,24,24); //xxyy
     if((mouseX>(xx-ww)) && (mouseX<(xx+ww)) && (mouseY>(yy-hh)) && (mouseY<(yy+hh))){
       fill('#FFFFFF');
       //print("sim");
       cursor(HAND);
     }else{
-      fill('#B0001B');
+      fill('#F4B9BF');
       cursor(ARROW);
     }
     noStroke();
@@ -272,10 +274,11 @@ if(aux){
 
     if((mouseX>(xx-ww)) && (mouseX<(xx+ww)) && (mouseY>(yy-hh)) && (mouseY<(yy+hh))){
       fill('#B0001B');
+      stroke('#B0001B');
     }else{
-      fill(255);
+      fill('#B0001B');
+      stroke('#B0001B');
     }
-    stroke(0);
     textSize(22);
     //textAlign(CENTER);
     text("COMEÇAR", xx-60, yy+10);
