@@ -2,6 +2,7 @@ html, body {
   margin: 0;
   padding: 0;
   position:relative;
+  position:relative;
 }
 
 canvas {
@@ -9,6 +10,14 @@ canvas {
   left:50%;
   transform: translateX(-50%);
   margin-top: 5%;
-
+  z-index:1;
   
 }
+
+/*input{
+  z-index:10;
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform: translate(-50%,-50%)
+}*/
