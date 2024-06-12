@@ -23,7 +23,7 @@ class Particle {
 
   }
 
-  update(/* curveX, curveY */) {
+  update(curveX, curveY) {
 
     let dx, dy, distDelta;
     
@@ -34,8 +34,8 @@ class Particle {
     this.ax = dx * this.pull;
     this.ay = dy * this.pull;
 
-    dx = this.x - mouseX;
-    dy = this.y - mouseY;
+    dx = this.x - curveX;
+    dy = this.y - curveY;
 
     this.currDist = Math.sqrt(dx*dx + dy*dy);
     distDelta = this.minDist - this.currDist;
@@ -58,7 +58,8 @@ class Particle {
   }
 
   draw() {
-    fill(255, 255, 255, this.currDist);
+    fill(0);
+    noStroke();
     if (this.diff > 30) this.size = 30;
     else this.size = letterSize;
 

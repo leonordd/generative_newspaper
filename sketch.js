@@ -5,7 +5,7 @@ w = 1280 / 2;
 h = 720 / 2;
 
 
-let boxWidth = 100;
+let boxWidth = 300;
 let boxHeight = 300;
 let letterSize = 16;
 let letterHeight = letterSize + 4;
@@ -46,7 +46,7 @@ function setup() {
   textFont(font);
 
    
-  let text = new TextBox(str, x, y, boxWidth, boxHeight, letterHeight, letterSize);
+  let text = new TextBox(str, x, y + letterHeight, boxWidth, boxHeight, letterHeight, letterSize);
   // randomBezierCurve(x, y, boxWidth, boxHeight);
   particles = text.getWordParticles();
 }
@@ -102,23 +102,22 @@ function randomBezierCurve(x, y, boxWidth, boxHeight) {
 
 let n = 0;
 let dir = 1;
-let numRepetitions = 2;
+let numRepetitions = 10;
 
 
 
 
 let init = true;
-
-
+let scale = 100;
 function draw() {
-  background(0);
+  background(255);
   noFill();
-  stroke(255);
+  stroke(0);
   rect(x, y, boxWidth, boxHeight);
   micLevel = mic.getLevel();
 
   
-  // bezier(x1, y1, x2, y2, x3, y3, x4, y4);  
+  bezier(x1, y1, x2, y2, x3, y3, x4, y4);  
   let points = getPoints([x1, x2, x3, x4], [y1, y2, y3, y4]);
   // print(points);
 
@@ -141,7 +140,7 @@ function draw() {
   fill(255, 0, 0);
   circle(points[n][0], points[n][1], 10);
   particles.forEach(particle => {
-    particle.update(/* points[n][0] * (micLevel * scale), points[n][1] * (micLevel * scale) */);
+    particle.update(points[n][0] * (micLevel * scale), points[n][1] * (micLevel * scale));
     particle.draw();
   }) 
 }
