@@ -90,7 +90,7 @@ function preload() {
   times_now = loadFont('assets/fonts/times_now/TimesNow-Semibold.ttf');
   verdana = loadFont('assets/fonts/verdana/Verdana.ttf');
   
-  fonts = [times, roboto, eb_garamond, alice, jost, lato, montserrat, open_sans, oswald, outfit, pirata_one, playfair_display, space_grotesk,times_now, verdana];
+  fonts = [times, roboto, eb_garamond, alice, jost, lato, montserrat, open_sans, oswald, outfit, playfair_display, space_grotesk,times_now, verdana];
   index = round(random(0, fonts.length-1));
   index2 = round(random(0, fonts.length-1));
 } 
@@ -200,7 +200,7 @@ function draw() {
     push();
     translate(0,-img2Pos);
 
-    grid.gridDisplay(gridColor);
+    //grid.gridDisplay(gridColor);
 
     if (dir == 1 && n < 100) n++;
     if (n == 100 || n == 0) {dir = -1 * dir;}
